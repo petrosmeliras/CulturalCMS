@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="CulturalCMS.API/CulturalCMS.API.csproj" />
+  <Project Path="CulturalCMS.Application/CulturalCMS.Application.csproj" />
+  <Project Path="CulturalCMS.Domain/CulturalCMS.Domain.csproj" />
+  <Project Path="CulturalCMS.Infrastructure/CulturalCMS.Infrastructure.csproj" />
+</Solution>
