@@ -11,7 +11,7 @@ namespace CulturalCMS.Infrastructure.QueryBuilders
 {
     public static class CulturalItemQueryBuilder
     {
-        public static IQueryable<CulturalItem> ApplyFilters(this IQueryable<CulturalItem> query, ItemSearchQuery searchQuery)
+        public static IQueryable<CulturalItem> ApplyFilters(IQueryable<CulturalItem> query, ItemSearchQuery searchQuery)
         {
             if (!string.IsNullOrWhiteSpace(searchQuery.Status))
             {
