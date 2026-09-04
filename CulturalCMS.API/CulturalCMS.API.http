@@ -1,6 +1,0 @@
-@CulturalCMS.API_HostAddress = http://localhost:5147
-
-GET {{CulturalCMS.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
