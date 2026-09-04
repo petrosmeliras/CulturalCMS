@@ -1,4 +1,4 @@
-﻿using CulturalCMS.Domain.Entities;
+﻿    using CulturalCMS.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -45,6 +45,8 @@ namespace CulturalCMS.Infrastructure.Data
                 entity.HasIndex(e => e.Email, "IX_Users_Email").IsUnique();
                 entity.HasIndex(e => e.Username, "IX_Users_Username").IsUnique();
 
+                entity.HasQueryFilter(e => !e.IsDeleted);
+
             });
 
             modelBuilder.Entity<CulturalItem>(entity =>
@@ -63,9 +65,6 @@ namespace CulturalCMS.Infrastructure.Data
                     .HasForeignKey(d => d.CreatedById)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_CulturalItems_CreatedById");
-
-                entity.OwnsOne(e => e.Dimensions);
-                entity.OwnsOne(e => e.Coordinates);
 
                 entity.HasIndex(e => e.Status, "IX_CulturalItems_Status");
                 entity.HasIndex(e => e.ViewCount, "IX_CulturalItems_ViewCount");
@@ -88,8 +87,9 @@ namespace CulturalCMS.Infrastructure.Data
                         "UQ_ItemMetadata_CulturalItemId_Key_Value")
                         .IsUnique();
 
-
                 entity.HasIndex(e => new { e.Key, e.Value }, "IX_ItemMetadata_KeyValue");
+
+                entity.HasQueryFilter(e => !e.CulturalItem.IsDeleted); 
 
             });
 

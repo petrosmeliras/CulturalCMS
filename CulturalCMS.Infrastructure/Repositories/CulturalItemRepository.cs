@@ -29,14 +29,6 @@ namespace CulturalCMS.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<CulturalItem>> GetByOwnerIdAsync(int userId, CancellationToken cancellationToken = default)
-        {
-            return await _dbSet
-                .Include(c => c.Metadata)
-                .Where(c => c.CreatedById == userId)
-                .OrderByDescending(c => c.CreatedAt)
-                .ToListAsync(cancellationToken);
-        }
 
         public override async Task<bool> DeleteAsync(int id)
         {
@@ -56,11 +48,16 @@ namespace CulturalCMS.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
-        public async Task<PaginatedResult<CulturalItem>> SearchAsync(ItemSearchQuery query, CancellationToken cancellationToken = default)
+        public async Task<PaginatedResult<CulturalItem>> SearchAsync(ItemSearchQuery query, int? ownerId = null, CancellationToken cancellationToken = default)
         {
             var dbQuery = _dbSet
                 .Include(c => c.Metadata)
                 .AsQueryable();
+
+            if (ownerId.HasValue)
+            {
+                dbQuery = dbQuery.Where(c => c.CreatedById == ownerId.Value);
+            }
 
             dbQuery = CulturalItemQueryBuilder.ApplyFilters(dbQuery, query);
 
@@ -77,5 +74,9 @@ namespace CulturalCMS.Infrastructure.Repositories
 
 
         }
+
+        public async Task ViewCountAsync(int id, CancellationToken cancellationToken = default)
+            => await _dbSet.Where(c => c.Id == id)
+                .ExecuteUpdateAsync(s => s.SetProperty(c => c.ViewCount, c => c.ViewCount + 1), cancellationToken);
     }
 }

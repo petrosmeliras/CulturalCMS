@@ -33,13 +33,21 @@ namespace CulturalCMS.Infrastructure.QueryBuilders
                 query = query.Where(c => c.HistoricalPeriod.ToLower().Contains(historicalPeriod));
             }
 
-            if (searchQuery.MetadataFilters != null && searchQuery.MetadataFilters.Any())
+            if (!string.IsNullOrWhiteSpace(searchQuery.MetadataKey) && !string.IsNullOrWhiteSpace(searchQuery.MetadataValue))
             {
-                foreach (var filter in searchQuery.MetadataFilters)
-                {
-                    query = query.Where(c => c.Metadata.Any(m =>
-                    m.Key.ToLower() == filter.Key.ToLower() && m.Value.ToLower().Contains(filter.Value.ToLower())));
-                }
+                var key = searchQuery.MetadataKey.ToLower();
+                var value = searchQuery.MetadataValue.ToLower();
+                query = query.Where(c => c.Metadata.Any(m => m.Key.ToLower().Contains(key) && m.Value.ToLower().Contains(value)));
+            }
+            else if (!string.IsNullOrWhiteSpace(searchQuery.MetadataKey))
+            {
+                var key = searchQuery.MetadataKey.ToLower();
+                query = query.Where(c => c.Metadata.Any(m => m.Key.ToLower().Contains(key)));
+            }
+            else if (!string.IsNullOrWhiteSpace(searchQuery.MetadataValue))
+            {
+                var value = searchQuery.MetadataValue.ToLower();
+                query = query.Where(c => c.Metadata.Any(m => m.Value.ToLower().Contains(value)));
             }
 
             if (!string.IsNullOrWhiteSpace(searchQuery.SearchTerm))

@@ -32,6 +32,12 @@ namespace CulturalCMS.Infrastructure.Repositories
                 .FirstOrDefaultAsync(u => u.Username == username, cancellationToken);
         }
 
+        public async Task<User?> GetUserByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _dbSet
+                .FirstOrDefaultAsync(u => u.Email == email, cancellationToken);
+        }
+
         public async Task<PaginatedResult<User>> GetUsersAsync(int pageNumber, int pageSize,
             List<Expression<Func<User, bool>>> predicates, CancellationToken cancellationToken = default)
         {
@@ -42,14 +48,14 @@ namespace CulturalCMS.Infrastructure.Repositories
             {
                 foreach (var predicate in predicates)
                 {
-                    query = query.Where(predicate); // υπονοείται το AND
+                    query = query.Where(predicate); 
                 }
             }
             totalRecords = await query.CountAsync(cancellationToken);
             int skip = (pageNumber - 1) * pageSize;
 
             var data = await query
-                .OrderBy(u => u.Id) // Πάντα OrderBy για να διασφαλίσουμε την σταθερή σειρά των αποτελεσμάτων
+                .OrderBy(u => u.Id)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToListAsync();

@@ -186,22 +186,10 @@ namespace CulturalCMS.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -293,56 +281,7 @@ namespace CulturalCMS.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_CulturalItems_CreatedById");
 
-                    b.OwnsOne("CulturalCMS.Domain.ValueObjects.Coordinates", "Coordinates", b1 =>
-                        {
-                            b1.Property<int>("CulturalItemId")
-                                .HasColumnType("integer");
-
-                            b1.Property<double>("Latitude")
-                                .HasColumnType("double precision");
-
-                            b1.Property<double>("Longitude")
-                                .HasColumnType("double precision");
-
-                            b1.HasKey("CulturalItemId");
-
-                            b1.ToTable("CulturalItems");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CulturalItemId");
-                        });
-
-                    b.OwnsOne("CulturalCMS.Domain.ValueObjects.Dimensions", "Dimensions", b1 =>
-                        {
-                            b1.Property<int>("CulturalItemId")
-                                .HasColumnType("integer");
-
-                            b1.Property<double>("Height")
-                                .HasColumnType("double precision");
-
-                            b1.Property<double>("Length")
-                                .HasColumnType("double precision");
-
-                            b1.Property<string>("Unit")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<double>("Width")
-                                .HasColumnType("double precision");
-
-                            b1.HasKey("CulturalItemId");
-
-                            b1.ToTable("CulturalItems");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CulturalItemId");
-                        });
-
-                    b.Navigation("Coordinates");
-
                     b.Navigation("Creator");
-
-                    b.Navigation("Dimensions");
                 });
 
             modelBuilder.Entity("CulturalCMS.Domain.Entities.ItemMetadata", b =>

@@ -56,4 +56,3 @@ namespace CulturalCMS.Infrastructure.Interceptors
         }
     }
 }
-
