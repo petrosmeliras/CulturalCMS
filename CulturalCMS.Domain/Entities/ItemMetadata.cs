@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CulturalCMS.Domain.Entities
 {
-    public class ItemMetadata 
+    public class ItemMetadata : BaseEntity
     {
         public int Id { get; set; }
         public int CulturalItemId { get; set; }

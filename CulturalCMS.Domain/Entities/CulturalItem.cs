@@ -1,5 +1,4 @@
 ﻿using CulturalCMS.Domain.Enums;
-using CulturalCMS.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +20,6 @@ namespace CulturalCMS.Domain.Entities
         public DateTime? PublishedAt { get; set; }
         public int CreatedById { get; set; }
         public User Creator { get; set; } = null!;
-        public Dimensions? Dimensions { get; set; }
-        public Coordinates? Coordinates { get; set; }
         public ICollection<ItemMetadata> Metadata { get; set; } = new HashSet<ItemMetadata>();
     }
 }

@@ -12,7 +12,5 @@ namespace CulturalCMS.Domain.Exceptions
             : base(code, message)
         {
         }
-
-
     }
 }
