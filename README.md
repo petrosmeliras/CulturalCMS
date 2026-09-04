@@ -7,7 +7,7 @@ A Cultural Content Management System — a full-stack web application for catalo
 ## Tech Stack
 
 **Backend**
-- .NET 8 Web API, layered architecture (Domain → Application → Infrastructure → API)
+- .NET 8 Web API, N-Layered architecture (Domain → Application → Infrastructure → API)
 - Entity Framework Core (Code-First), PostgreSQL
 - JWT authentication, role-based authorization (Admin / Curator / Contributor)
 - AutoMapper, Repository + Unit of Work pattern
@@ -52,32 +52,59 @@ Before you start, make sure you have:
 
 ---
 
-## Getting Started
+## Build & Deploy — Step by Step
 
-### 1. Create your `.env`
+The entire application (database, backend, and frontend) is built and deployed with a single command. Follow these steps from scratch:
 
-From the project root, copy the example file and fill in the values:
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/petrosmeliras/CulturalCMS.git
+cd CulturalCMS
+```
+
+### 2. Create the environment files
+
+The app reads its configuration from `.env` files, which are **not** committed to the repository. Copy them from the provided examples — these ship with working demo values, so no editing is required to run the project:
 
 ```bash
 cp .env.example .env
+cp cultural-cms-frontend/.env.example cultural-cms-frontend/.env
 ```
 
-The example file ships with working demo values, so you can run the project without changing anything. `DB_PASSWORD` and `JWT_SECRET` are demo credentials meant for local evaluation only. See [Environment Variables](#environment-variables) below for the full list.
+> **Windows PowerShell:** use `Copy-Item .env.example .env` instead of `cp`.
+>
+> **Note:** `DB_HOST` must be `db` (the name of the database service inside the Docker network), **not** `localhost`. The demo `.env` is already set correctly.
 
-> **Note:** `DB_HOST` must be `db` (the name of the database service inside the Docker network), **not** `localhost`.
-
-### 2. Run everything
+### 3. Build and start all services
 
 ```bash
 docker compose up --build
 ```
 
-This starts all three containers together:
-- **PostgreSQL** — the database
-- **Backend API** — `http://localhost:8080` (Swagger UI at `http://localhost:8080/swagger`)
-- **Frontend** — `http://localhost:3000`
+This single command builds and deploys the whole stack:
+- **PostgreSQL** starts first, with a healthcheck so the backend only connects once the database is ready.
+- **Backend API (.NET 8)** is built and published in `Release` mode, then on startup it automatically applies **EF Core migrations** (creating the schema) and runs **database seeding** (roles, test users, and 15+ sample items). No manual migration or seeding step is needed.
+- **Frontend (React + TypeScript)** is built into an optimized production bundle and served by nginx.
 
-Migrations and database seeding run automatically on first start.
+The first build takes a few minutes (dependencies are downloaded and compiled). Subsequent runs are much faster.
+
+### 4. Access the application
+
+Once all three containers are up:
+- **Frontend:** `http://localhost:3000`
+- **Backend API / Swagger UI:** `http://localhost:8080/swagger`
+
+### 5. Log in
+
+Use any of the test users listed in [Roles & Test Users](#roles--test-users), or browse the published items anonymously.
+
+### Stopping and restarting
+
+```bash
+docker compose down        # Stop all containers (keeps the database data)
+docker compose down -v     # Stop and wipe the database for a clean re-seed
+```
 
 ### Environment Variables
 
