@@ -1,6 +1,15 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".env" />
+    <File Path=".env.example" />
+    <File Path=".gitignore" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+  </Folder>
   <Project Path="CulturalCMS.API/CulturalCMS.API.csproj" />
   <Project Path="CulturalCMS.Application/CulturalCMS.Application.csproj" />
   <Project Path="CulturalCMS.Domain/CulturalCMS.Domain.csproj" />
   <Project Path="CulturalCMS.Infrastructure/CulturalCMS.Infrastructure.csproj" />
+  <Project Path="CulturalCMS.Tests/CulturalCMS.Tests.csproj" />
 </Solution>

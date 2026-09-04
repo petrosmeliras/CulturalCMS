@@ -1,0 +1,25 @@
+# Build output
+**/bin/
+**/obj/
+
+# Git
+.git/
+
+# IDE
+.vs/
+*.user
+
+# Rider
+.idea/
+
+# Environment files
+.env
+.env.*
+
+# Frontend (built separately)
+cultural-cms-frontend/
+
+# Docker files
+docker-compose.yml
+Dockerfile
+.dockerignore
