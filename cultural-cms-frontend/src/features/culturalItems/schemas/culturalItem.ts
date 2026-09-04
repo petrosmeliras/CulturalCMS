@@ -12,6 +12,7 @@ export const metadataItemSchema = z.object({
 
 export const culturalItemSchema = z.object({
   title: z.string()
+    .min(1, { message: t.validation.required })
     .min(2, { message: t.validation.title })
     .max(200, { message: t.validation.title }),
   description: z.string()
